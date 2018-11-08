@@ -20,13 +20,15 @@
         slot="activator"
         right
         icon
-        to="/login"
+        @click="logout()"
       )
         v-icon power_settings_new
       span EXIT
 </template>
 
 <script>
+import AuthService from '@/app/Auth/AuthService'
+
 export default {
   name: 'Toolbar',
   props: {
@@ -38,6 +40,12 @@ export default {
     title: 'Vintage'
   }),
   methods: {
+    logout () {
+      AuthService.logout()
+      this
+        .$router
+        .push('/auth')
+    },
     eventToogleMiniVariant () {
       this.$emit('mini-variant')
     },

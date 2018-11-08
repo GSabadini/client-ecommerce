@@ -67,14 +67,12 @@ export default {
   methods: {
     auth () {
       const { user } = this
-
       AuthService
         .auth(user)
-        .then((response) => {
-          console.log(response)
-        })
-        .catch((response) => {
-          console.log(response)
+        .then(({ data }) => {
+          AuthService.saveUser(data.user)
+          AuthService.saveToken(data.token)
+          this.goPage()
         })
     },
     goPage () {

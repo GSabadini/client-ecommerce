@@ -9,11 +9,19 @@ class LoginService {
   }
 
   saveToken (token) {
-    localStorage.setItem('Authorization', token)
+    localStorage.setItem('authorization', `Bearer ${token}`)
+  }
+
+  saveUser (user) {
+    localStorage.setItem('user', JSON.stringify(user))
   }
 
   getToken () {
-    return localStorage.getItem('Authorization')
+    return localStorage.getItem('authorization')
+  }
+
+  logout () {
+    localStorage.clear()
   }
 }
 

@@ -3,10 +3,11 @@ import Router from 'vue-router'
 import routes from './routes'
 import Layout from '@/app/Arch/Layout'
 import AuthForm from '@/app/Auth/AuthForm'
+import AuthService from '@/app/Auth/AuthService'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
@@ -23,3 +24,19 @@ export default new Router({
     }
   ]
 })
+
+router.beforeEach((to, from, next) => {
+  const token = AuthService.getToken()
+
+  if (!token && to.name !== 'auth') {
+    return next('/auth')
+  }
+
+  if (token && to.name === 'auth') {
+    return next('/')
+  }
+
+  return next()
+})
+
+export default router
