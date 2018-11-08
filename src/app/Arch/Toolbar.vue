@@ -13,11 +13,6 @@
     )
       v-icon(v-if="miniVariant") chevron_right
       v-icon(v-if="!miniVariant") chevron_left
-    v-btn(
-      icon
-      @click.stop="eventToogleClipped()"
-    )
-      v-icon web
     v-toolbar-title {{ title }}
     v-spacer
     v-tooltip(bottom)
@@ -28,7 +23,7 @@
         to="/login"
       )
         v-icon power_settings_new
-      span SAIR
+      span EXIT
 </template>
 
 <script>
@@ -40,14 +35,11 @@ export default {
     icone: String
   },
   data: () => ({
-    title: 'Vue Arq'
+    title: 'Vintage'
   }),
   methods: {
     eventToogleMiniVariant () {
       this.$emit('mini-variant')
-    },
-    eventToogleClipped () {
-      this.$emit('clipped')
     },
     eventToogleDrawer () {
       this.$emit('drawer')

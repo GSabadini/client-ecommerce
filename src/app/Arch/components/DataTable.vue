@@ -216,7 +216,6 @@ export default {
       this
         .$swal(options)
         .then((result) => {
-          console.log(result.value)
           this.requestDelete(id)
         }, () => {})
     },

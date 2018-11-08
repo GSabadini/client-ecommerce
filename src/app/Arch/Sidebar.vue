@@ -46,9 +46,7 @@
             )
     toolbar(
       @mini-variant="toogleMiniVariant()"
-      @clipped="toogleClipped()"
       @drawer="toogleDrawer()"
-      :clipped="clipped"
       :miniVariant="miniVariant"
     )
 </template>
@@ -85,9 +83,6 @@ export default {
   methods: {
     toogleMiniVariant () {
       this.miniVariant = !this.miniVariant
-    },
-    toogleClipped () {
-      this.clipped = !this.clipped
     },
     toogleDrawer () {
       this.drawer = !this.drawer

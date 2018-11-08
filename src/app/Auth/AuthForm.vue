@@ -6,15 +6,17 @@
           v-flex(xs12 sm8 md4)
             v-card.elevation-12
               v-toolbar(dark color="primary")
-                v-toolbar-title Login form
+                v-toolbar-title Login
               v-card-text
                 v-form
                   v-text-field(
                     prepend-icon="person"
-                    name="login"
-                    label="Login"
+                    name="email"
+                    label="E-mail"
                     type="text"
-                    v-model="user.login"
+                    v-model="user.email"
+                    required
+                    :rules="rules.email"
                   )
                   v-text-field(
                     id="password"
@@ -23,34 +25,58 @@
                     label="Password"
                     type="password"
                     v-model="user.password"
+                    required
+                    :rules="rules.password"
                   )
               v-card-actions
                 v-spacer
                 v-btn(
                   color="primary"
-                  @click="goPage()"
-                  :disabled="isDadosExist"
+                  @click="auth()"
+                  :disabled="isDataExist"
                 ) Entrar
 </template>
 
 <script>
 import { isEmpty } from 'lodash'
+import AuthService from './AuthService'
 
 export default {
-  name: 'Login',
+  name: 'auth-form',
   data: () => ({
     user: {
-      login: '',
+      email: '',
       password: ''
-    }
+    },
+    rules: {
+      email: [
+        v => !!v || 'Required field',
+        v => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'Email invalid',
+      ],
+      password: [
+        v => !!v || 'Required field',
+      ],
+    },
   }),
   computed: {
-    isDadosExist () {
-      const { login, password } = this.user
-      return isEmpty(login) || isEmpty(password)
+    isDataExist () {
+      const { email, password } = this.user
+      return isEmpty(email) || isEmpty(password)
     }
   },
   methods: {
+    auth () {
+      const { user } = this
+
+      AuthService
+        .auth(user)
+        .then((response) => {
+          console.log(response)
+        })
+        .catch((response) => {
+          console.log(response)
+        })
+    },
     goPage () {
       this.$router.push('/')
     }

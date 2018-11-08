@@ -22,7 +22,7 @@
                   name="avatar"
                   label="Avatar"
                   id="avatar"
-                  :src="example.avatar"
+                  :src="product.avatar"
                 )
           v-layout.mt-2(row)
             v-flex(xs12)
@@ -31,7 +31,7 @@
                 label="Nome"
                 id="name"
                 :rules="inputRules"
-                v-model="example.name"
+                v-model="product.name"
                 required
               )
         v-layout(row)
@@ -51,13 +51,14 @@ import ProductService from './ProductService'
 import miniToastr from 'mini-toastr'
 
 export default {
+  name: 'product-form',
   components: {
     CardDefault
   },
   data: () => ({
     title: 'New product',
     id: null,
-    example: {},
+    product: {},
     inputRules: [
       (v) => !!v || 'Filling in this field is required.'
     ],
@@ -95,13 +96,13 @@ export default {
     goToBack () {
       this
         .$router
-        .push('/examples')
+        .push('/products')
     },
     getData () {
       ProductService
         .getExampleId(this.id)
         .then(({ data }) => {
-          this.example = data
+          this.product = data
           this.title = `Editar ${data.name}`
         })
     },
@@ -118,26 +119,26 @@ export default {
     },
     newProduct () {
       ProductService
-        .newProduct(this.example)
+        .newProduct(this.product)
         .then(() => {
-          this.successfullRequest('Example cadastrado com sucesso')
+          this.successfullRequest('Product created successfully')
         })
         .catch(({ body }) => {
-          miniToastr.error(body, 'Erro!!')
+          miniToastr.error(body, 'Error!!')
         })
     },
     editProduct () {
       ProductService
-        .editProduct(this.id, this.example)
+        .editProduct(this.id, this.product)
         .then(() => {
-          this.successfullRequest('Example alterado com sucesso')
+          this.successfullRequest('Product successfully edited')
         })
         .catch(({ body }) => {
-          miniToastr.error(body, 'Erro!!')
+          miniToastr.error(body, 'Error!!')
         })
     },
     successfullRequest (message) {
-      miniToastr.success(message, 'Sucesso!')
+      miniToastr.success(message, 'Success!')
       this.goToBack()
     }
   }

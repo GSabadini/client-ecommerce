@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import routes from './routes'
 import Layout from '@/app/Arch/Layout'
+import AuthForm from '@/app/Auth/AuthForm'
 
 Vue.use(Router)
 
@@ -16,9 +17,9 @@ export default new Router({
       children: routes
     },
     {
-      path: '/login',
-      name: 'Login',
-      component: () => import('@/app/Auth/LoginForm')
+      path: '/auth',
+      name: 'auth',
+      component: AuthForm
     }
   ]
 })

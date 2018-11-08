@@ -1,32 +1,33 @@
 import CrudForge from '@/app/Arch/CrudForge'
-import ExampleForm from '@/app/Example/ExampleForm'
+import ProductForm from '@/app/Product/ProductForm'
+import ProductList from '@/app/Product/ProductList'
 
 export default [
   {
-    path: '/examples',
+    path: '/products',
     component: CrudForge,
-    props: { route: 'examples', title: 'Example' },
+    props: { route: 'products', title: 'Products' },
     meta: {
       sidebar: {
         icon: 'account_circle',
-        title: 'Example'
+        title: 'Products'
       }
     },
     children: [
       {
         path: '/',
-        component: () => import('@/app/Example/ExampleList'),
-        meta: { title: 'Example List' }
+        component: ProductList,
+        meta: { title: 'Product list' }
       },
       {
         path: 'new',
-        component: ExampleForm,
-        meta: { title: 'Example' }
+        component: ProductForm,
+        meta: { title: 'Product' }
       },
       {
         path: 'edit/:id',
-        component: ExampleForm,
-        meta: { title: 'Example' }
+        component: ProductForm,
+        meta: { title: 'Product' }
       }
     ]
   }
