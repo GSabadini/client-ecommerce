@@ -1,5 +1,11 @@
-<template>
-  <div class="about">
-    <h1>This is an about page</h1>
-  </div>
+<template lang="pug">
+  .about
+    v-container
+      v-layout(row align-center justify-center)
+        v-flex(xs12)
+          h1 oi1
+          h1 oi
+          h1 oi
+          h1 oi
+          h1 oi
 </template>
