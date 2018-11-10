@@ -1,6 +1,6 @@
 <template lang="pug">
   card-default
-    v-toolbar.elevation-0.card-title
+    v-toolbar.elevation-1.py-2
       v-btn(icon
         @click="goToBack()"
       )
@@ -21,7 +21,7 @@
           )
           v-layout(column align-center justify-center)
             v-flex(xs12)
-              v-avatar(:size="150")
+              v-avatar(:size="200")
                 v-img(
                   name="image"
                   id="image"
@@ -75,11 +75,11 @@
           v-spacer
           v-btn(
             @click="goToBack()"
-          ) Cancelar
+          ) Cancel
           v-btn(
             color="primary"
             @click="save()"
-          ) Salvar
+          ) Save
 </template>
 
 <script>
@@ -131,9 +131,9 @@ export default {
     goToBack () {
       this
         .$router
-        .push('/products')
+        .back()
     },
-    getCategories() {
+    getCategories () {
       CategoryService
         .getCategories()
         .then(({ data }) => {

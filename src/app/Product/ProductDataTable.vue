@@ -2,7 +2,7 @@
   card-default
     v-toolbar.elevation-1.py-2(color="grey lighten-4")
       v-toolbar-title Products
-        v-icon.ml-2 build
+        v-icon(color="primary").ml-2 assessment
       v-spacer
       v-tooltip(bottom)
         v-btn.mt-2(
@@ -33,7 +33,7 @@
         )
         template(slot="items" slot-scope="props")
           td.text-xs-left {{ props.item.name }}
-          td.text-xs-left {{ props.item.price }}
+          td.text-xs-left {{ props.item.price | moneyFormat }}
           td.text-xs-left
             v-avatar.my-2(:size="40")
               v-img(:src="props.item.image")
@@ -47,7 +47,7 @@
                 color="grey darken-3"
                 small
                 slot="activator"
-                @click="editRow(props.item)"
+                @click="editRow(props.item.id)"
                 )
                 v-icon.grey--text.text--darken-2 edit
               span Edit
@@ -59,14 +59,13 @@
                 color="grey darken-3"
                 small
                 slot="activator"
-                @click="deleteRow(props.item)"
+                @click="deleteRow(props.item.id)"
                 )
                 v-icon.grey--text.text--darken-2 delete
               span Delete
     .text-xs-center.py-3
       v-pagination(
         v-model="currentPage"
-        :total-visible="10"
         :length="pages"
         )
 </template>
@@ -75,6 +74,8 @@
 import CardDefault from '@/app/Arch/components/CardDefault'
 import LazyTextField from '@/app/Arch/components/LazyTextField'
 import ProductService from './ProductService'
+import messageNotification from '@/mixins/messageNotification'
+import moneyFormat from '@/filters/moneyFormat'
 
 export default {
   name: 'product-data-table',
@@ -82,6 +83,9 @@ export default {
     CardDefault,
     LazyTextField
   },
+  mixins: [
+    messageNotification
+  ],
   data: () => ({
     currentPage: 1,
     searchTerm: '',
@@ -122,7 +126,7 @@ export default {
           this.pagination.totalItems = data.total
         })
     },
-    editRow ({ id }) {
+    editRow (id) {
       this
         .$router
         .push(`${this.uri}/edit/${id}`)
@@ -141,7 +145,9 @@ export default {
       this
         .$swal(options)
         .then((result) => {
-          this.deleteProduct(id)
+          if (result.value) {
+            this.deleteProduct(id)
+          }
         }, () => {})
     },
     deleteProduct (id) {
@@ -149,6 +155,7 @@ export default {
         .deleteProduct(id)
         .then(() => {
           this.getProducts()
+          this.messageSuccess('Product successfully deleted')
         })
     },
     goToForm () {
@@ -159,8 +166,7 @@ export default {
   },
   watch: {
     currentPage (newValue) {
-      this
-        .getProducts(newValue)
+      this.getProducts(newValue)
     }
   }
 }

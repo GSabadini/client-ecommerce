@@ -10,12 +10,15 @@
     v-layout(justify-center)
       v-dialog(v-model="dialog" persistent max-width="350")
         v-flex(xs12)
-          v-card(color="info")
-            v-card-title.title Tem certeza que deseja inserir esse arquivo?
+          v-card
+            v-toolbar
+              v-toolbar-title Image
+            v-card-title.title Are you sure you want to insert this file?
             v-spacer
+            v-card-text
               v-layout(row justify-center)
-                v-btn(color="success" @click="onUpload") Sim
-                v-btn(color="error" @click.stop="onDialog") Não
+                v-btn(color="primary" @click="onUpload") Yes
+                v-btn(@click.stop="onDialog") No
       v-btn.primary(@click="onInput" color="primary" block slot="activator") Add image
         v-icon.ml-3 add_a_photo
 </template>

@@ -4,11 +4,15 @@
       v-container(fluid fill-height)
         v-layout(align-center justify-center)
           v-flex(xs12 sm8 md4)
-            v-card.elevation-12
+            v-card
               v-toolbar(dark color="primary")
-                v-toolbar-title Login
+                v-toolbar-title Vintage Admin
+                  v-icon.ml-2 settings
               v-card-text
-                v-form
+                v-form(
+                  ref="form"
+                  v-model="formValid"
+                  )
                   v-text-field(
                     prepend-icon="person"
                     name="email"
@@ -30,11 +34,11 @@
                   )
               v-card-actions
                 v-spacer
+                v-btn Sign Up
                 v-btn(
                   color="primary"
                   @click="auth()"
-                  :disabled="isDataExist"
-                ) Entrar
+                ) Sign In
 </template>
 
 <script>
@@ -44,6 +48,7 @@ import AuthService from './AuthService'
 export default {
   name: 'auth-form',
   data: () => ({
+    formValid: false,
     user: {
       email: '',
       password: ''
@@ -59,14 +64,16 @@ export default {
     }
   }),
   computed: {
-    isDataExist () {
-      const { email, password } = this.user
-      return isEmpty(email) || isEmpty(password)
+    isFormValid () {
+      return !this.formValid
     }
   },
   methods: {
     auth () {
       const { user } = this
+
+      if (!this.formValid) return
+
       AuthService
         .auth(user)
         .then(({ data }) => {
@@ -79,7 +86,7 @@ export default {
         })
     },
     goPage () {
-      this.$router.push('/')
+      this.$router.push('/backoffice')
     }
   }
 }

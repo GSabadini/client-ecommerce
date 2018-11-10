@@ -4,7 +4,7 @@ import ProductDataTable from '@/app/Product/ProductDataTable'
 
 export default [
   {
-    path: '/products',
+    path: 'products',
     component: CrudForge,
     props: { route: 'products', title: 'Products' },
     meta: {

@@ -81,6 +81,7 @@ export default {
   },
   methods: {
     toogleMiniVariant () {
+      console.log('oi')
       this.miniVariant = !this.miniVariant
     },
     toogleDrawer () {

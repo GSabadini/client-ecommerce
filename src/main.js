@@ -5,6 +5,7 @@ import store from './store/store'
 import '@babel/polyfill'
 import './plugins/vuetify'
 import './plugins/VueSweetalert2'
+import './plugins/filters'
 
 Vue.config.productionTip = false
 
