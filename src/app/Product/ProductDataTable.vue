@@ -1,0 +1,176 @@
+<template lang="pug">
+  card-default
+    v-toolbar.elevation-1.py-2(color="grey lighten-4")
+      v-toolbar-title Products
+        v-icon.ml-2 build
+      v-spacer
+      v-tooltip(bottom)
+        v-btn.mt-2(
+          id="botao"
+          color="primary"
+          right
+          absolute
+          fab
+          slot="activator"
+          @click="goToForm()"
+          )
+          v-icon add
+        span Add
+    v-card-text
+      v-card-title
+        .title
+          v-flex(xs6)
+            lazy-text-field(:search-term.sync="searchTerm")
+      v-data-table.elevation-5.mt-1.table-nowrap(
+        id="listTable"
+        no-data-text="Nenhum registro encontrado"
+        no-results-text="Nenhum resultado encontrado"
+        :headers="headers"
+        :items="items"
+        hide-actions
+        :pagination.sync="pagination"
+        :loading="true"
+        )
+        template(slot="items" slot-scope="props")
+          td.text-xs-left {{ props.item.name }}
+          td.text-xs-left {{ props.item.price }}
+          td.text-xs-left
+            v-avatar.my-2(:size="40")
+              v-img(:src="props.item.image")
+          td.text-xs-left {{ props.item.category_id }}
+          td.text-xs-left.cursor-pointer
+            v-tooltip(top)
+              v-btn.ma-0(
+                icon
+                flat
+                dark
+                color="grey darken-3"
+                small
+                slot="activator"
+                @click="editRow(props.item)"
+                )
+                v-icon.grey--text.text--darken-2 edit
+              span Edit
+            v-tooltip(top)
+              v-btn(
+                icon
+                flat
+                dark
+                color="grey darken-3"
+                small
+                slot="activator"
+                @click="deleteRow(props.item)"
+                )
+                v-icon.grey--text.text--darken-2 delete
+              span Delete
+    .text-xs-center.py-3
+      v-pagination(
+        v-model="currentPage"
+        :total-visible="10"
+        :length="pages"
+        )
+</template>
+
+<script>
+import CardDefault from '@/app/Arch/components/CardDefault'
+import LazyTextField from '@/app/Arch/components/LazyTextField'
+import ProductService from './ProductService'
+
+export default {
+  name: 'product-data-table',
+  components: {
+    CardDefault,
+    LazyTextField
+  },
+  data: () => ({
+    currentPage: 1,
+    searchTerm: '',
+    pagination: {
+      rowsPerPage: 15,
+      totalItems: null
+    },
+    metadata: {},
+    items: [],
+    headers: [
+      { text: 'Name', value: 'name', align: 'left', width: '20%', sortable: false },
+      { text: 'Price', value: 'price', align: 'left', width: '20%', sortable: false },
+      { text: 'Image', value: 'image', align: 'left', width: '20%', sortable: false },
+      { text: 'Category', value: 'category_id', align: 'left', width: '20%', sortable: false },
+      { text: 'Actions', value: 'actions', align: 'left', width: '20%', sortable: false }
+    ],
+    uri: 'products'
+  }),
+  computed: {
+    pages () {
+      let { rowsPerPage, totalItems } = this.pagination
+      if (rowsPerPage == null || totalItems == null) {
+        return 0
+      }
+      return Math.ceil(totalItems / rowsPerPage)
+    }
+  },
+  created () {
+    this.getProducts()
+  },
+  methods: {
+    getProducts (page) {
+      ProductService
+        .getProducts(page)
+        .then(({ data }) => {
+          this.items = data.data
+          this.currentPage = data.current_page
+          this.pagination.totalItems = data.total
+        })
+    },
+    editRow ({ id }) {
+      this
+        .$router
+        .push(`${this.uri}/edit/${id}`)
+    },
+    deleteRow (id) {
+      const options = {
+        title: 'Warning !!!',
+        text: 'Are you sure you want to delete this record ?',
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3e4094',
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'Cancel'
+      }
+
+      this
+        .$swal(options)
+        .then((result) => {
+          this.deleteProduct(id)
+        }, () => {})
+    },
+    deleteProduct (id) {
+      ProductService
+        .deleteProduct(id)
+        .then(() => {
+          this.getProducts()
+        })
+    },
+    goToForm () {
+      this
+        .$router
+        .push(`${this.uri}/new`)
+    }
+  },
+  watch: {
+    currentPage (newValue) {
+      this
+        .getProducts(newValue)
+    }
+  }
+}
+</script>
+
+<style lang="stylus">
+.title
+  display flex
+  justify-content space-between
+  width 100%
+.table-nowrap
+  white-space nowrap
+</style>

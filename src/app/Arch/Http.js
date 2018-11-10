@@ -3,27 +3,20 @@ import Router from '@/router'
 import AuthService from '@/app/Auth/AuthService'
 import miniToastr from 'mini-toastr'
 
-const messageBodyErrors =  error => {
-  const keys = Object.keys(error)
-  keys.forEach((key) => {
-    const errorArray = error[key]
-    miniToastr.error(errorArray, 'Erro!')
-  })
-}
-
 const unauthorizedCode = 401
 
 const responseSucess = response => response
 
 const responseError = ({ response }) => {
   if (response.status === unauthorizedCode) {
-    messageBodyErrors(response.data)
+    miniToastr.error('Invalid credentials', 'Error!')
     Router.replace('/auth')
   }
 }
 
 class Http {
   constructor () {
+    miniToastr.init()
     const axiosInstance = axios.create({
       baseURL: 'http://localhost:8081/api/'
     })

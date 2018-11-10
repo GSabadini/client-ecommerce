@@ -16,7 +16,7 @@
               v-layout(row justify-center)
                 v-btn(color="success" @click="onUpload") Sim
                 v-btn(color="error" @click.stop="onDialog") Não
-      v-btn.primary(@click="onInput" color="primary" block slot="activator") Escolha as Imagens
+      v-btn.primary(@click="onInput" color="primary" block slot="activator") Add image
         v-icon.ml-3 add_a_photo
 </template>
 
@@ -32,17 +32,17 @@ export default {
     dialog: false
   }),
   methods: {
-    onDialog(dialog) {
+    onDialog (dialog) {
       this.dialog = !dialog
     },
-    onInput() {
+    onInput () {
       this.$refs.fileInput.click()
     },
-    onFileSelected(event) {
+    onFileSelected (event) {
       this.dialog = true
       this.selectedFile = event.target.files
     },
-    onUpload() {
+    onUpload () {
       Array.prototype.forEach.call(this.selectedFile, (file, index) => {
         const fd = new FormData()
         fd.append('file', file, file.name)

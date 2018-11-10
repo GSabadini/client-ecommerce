@@ -27,7 +27,6 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
   const token = AuthService.getToken()
-
   if (!token && to.name !== 'auth') {
     return next('/auth')
   }

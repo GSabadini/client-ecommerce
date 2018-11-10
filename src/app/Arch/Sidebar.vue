@@ -1,7 +1,7 @@
 <template lang="pug">
   #sidebar
     v-navigation-drawer(
-      dark
+      light
       persistent
       :mini-variant="miniVariant"
       :clipped="clipped"
@@ -10,7 +10,7 @@
       fixed
       app
     )
-      v-toolbar.elevation-0.logo.primary
+      v-toolbar.elevation-0.logo
         img(
           src="@/assets/logo.png"
           width="40sem"
@@ -23,7 +23,6 @@
         )
           v-list-tile-action
             v-icon(
-              color="white"
             ) home
           v-list-tile-content
             v-list-tile-title.sidebar-link.subheading Home
@@ -38,10 +37,10 @@
             v-icon(
               slot="activator"
               v-html="item.icon"
-              color="white"
+              color="black"
             )
           v-list-tile-content
-            v-list-tile-title.sidebar-link.subheading(
+            v-list-tile-title.text--black.sidebar-link.subheading(
               v-text="item.title"
             )
     toolbar(
@@ -103,5 +102,5 @@ export default {
       justify-content center
 
   .sidebar-link
-    color white
+    color black
 </style>

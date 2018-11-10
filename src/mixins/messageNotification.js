@@ -16,6 +16,14 @@ export default {
     },
     messageInfo (message) {
       miniToastr.info(message, 'Info!')
+    },
+    messageBodyErrors (error) {
+      const keys = Object.keys(error)
+      keys.forEach((key) => {
+        const errorArray = error[key]
+        miniToastr.error(errorArray, 'Erro!')
+      })
     }
+
   }
 }

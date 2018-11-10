@@ -19,10 +19,10 @@ export default {
   },
   data: () => ({
     headers: [
-      { text: 'Name', value: 'name', align: 'left', width: '20%', sortable: false},
+      { text: 'Name', value: 'name', align: 'left', width: '20%', sortable: false },
       { text: 'Price', value: 'price', align: 'left', width: '20%', sortable: false },
       { text: 'Image', value: 'image', align: 'left', width: '20%', sortable: false },
-      { text: 'Category', value: 'category', align: 'left', width: '20%', sortable: false },
+      { text: 'Category', value: 'category_id', align: 'left', width: '20%', sortable: false }
     ]
   })
 }

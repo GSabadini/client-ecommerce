@@ -10,6 +10,10 @@
     v-divider
     v-card-text.pt-2.pb-2
       v-container(grid-list-lg)
+        v-layout(row)
+          v-spacer
+          v-btn.primary(
+          ) Preview
         v-form(
           v-model="formValid"
           ref="form"
@@ -19,22 +23,55 @@
             v-flex(xs12)
               v-avatar(:size="150")
                 v-img(
-                  name="avatar"
-                  label="Avatar"
-                  id="avatar"
-                  :src="product.avatar"
+                  name="image"
+                  id="image"
+                  :src="product.image"
                 )
+            v-flex(xs12)
+              file-upload
           v-layout.mt-2(row)
             v-flex(xs12)
               v-text-field(
                 name="name"
-                label="Nome"
+                label="Name"
                 id="name"
                 :rules="inputRules"
                 v-model="product.name"
                 required
               )
-        v-layout(row)
+          v-layout(row)
+            v-flex(xs12)
+              v-textarea(
+                name="description"
+                label="Description"
+                id="description"
+                :rules="inputRules"
+                v-model="product.description"
+                required
+              )
+          v-layout(row)
+            v-flex(xs6)
+              v-select(
+                name="category_id"
+                label="Categories"
+                id="category_id"
+                :items="categories"
+                item-text="name"
+                item-value="id"
+                :rules="inputRules"
+                v-model="product.category_id"
+                required
+              )
+            v-flex(xs6)
+              v-text-field(
+                name="price"
+                label="Price"
+                id="price"
+                :rules="inputRules"
+                v-model="product.price"
+                required
+              )
+        v-layout.mt-5(row)
           v-spacer
           v-btn(
             @click="goToBack()"
@@ -47,13 +84,16 @@
 
 <script>
 import CardDefault from '@/app/Arch/components/CardDefault'
+import FileUpload from '@/app/Arch/FileUpload'
 import ProductService from './ProductService'
+import CategoryService from '@/app/Category/CategoryService'
 import miniToastr from 'mini-toastr'
 
 export default {
   name: 'product-form',
   components: {
-    CardDefault
+    CardDefault,
+    FileUpload
   },
   data: () => ({
     title: 'New product',
@@ -62,7 +102,8 @@ export default {
     inputRules: [
       (v) => !!v || 'Filling in this field is required.'
     ],
-    formValid: false
+    formValid: false,
+    categories: []
   }),
   computed: {
     verifyIdExist () {
@@ -70,9 +111,9 @@ export default {
     },
     isValidForm () {
       return this
-      .$refs
-      .form
-      .validate()
+        .$refs
+        .form
+        .validate()
     }
   },
   created () {
@@ -80,27 +121,28 @@ export default {
     this.id = idParams
 
     if (this.id) {
-      this.getData()
+      this.getProductId()
     }
 
+    this.getCategories()
     miniToastr.init()
   },
   methods: {
-    getExampleInService () {
-      ProductService
-        .getExample()
-        .then(({ data }) => {
-          console.log('b', data)
-        })
-    },
     goToBack () {
       this
         .$router
         .push('/products')
     },
-    getData () {
+    getCategories() {
+      CategoryService
+        .getCategories()
+        .then(({ data }) => {
+          this.categories = data
+        })
+    },
+    getProductId () {
       ProductService
-        .getExampleId(this.id)
+        .getProductId(this.id)
         .then(({ data }) => {
           this.product = data
           this.title = `Editar ${data.name}`

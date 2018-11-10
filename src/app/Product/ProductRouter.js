@@ -1,6 +1,6 @@
 import CrudForge from '@/app/Arch/CrudForge'
 import ProductForm from '@/app/Product/ProductForm'
-import ProductList from '@/app/Product/ProductList'
+import ProductDataTable from '@/app/Product/ProductDataTable'
 
 export default [
   {
@@ -9,14 +9,14 @@ export default [
     props: { route: 'products', title: 'Products' },
     meta: {
       sidebar: {
-        icon: 'account_circle',
+        icon: 'shopping_cart',
         title: 'Products'
       }
     },
     children: [
       {
         path: '/',
-        component: ProductList,
+        component: ProductDataTable,
         meta: { title: 'Product list' }
       },
       {

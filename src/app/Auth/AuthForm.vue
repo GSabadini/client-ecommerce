@@ -51,12 +51,12 @@ export default {
     rules: {
       email: [
         v => !!v || 'Required field',
-        v => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'Email invalid',
+        v => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'Email invalid'
       ],
       password: [
-        v => !!v || 'Required field',
-      ],
-    },
+        v => !!v || 'Required field'
+      ]
+    }
   }),
   computed: {
     isDataExist () {
@@ -73,6 +73,9 @@ export default {
           AuthService.saveUser(data.user)
           AuthService.saveToken(data.token)
           this.goPage()
+        })
+        .catch(response => {
+          console.error('Invalid credencials')
         })
     },
     goPage () {

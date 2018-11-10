@@ -1,6 +1,6 @@
 <template lang="pug">
   v-toolbar(
-    dark
+    light
     app
     :clipped-left="clipped"
   )
@@ -15,15 +15,12 @@
       v-icon(v-if="!miniVariant") chevron_left
     v-toolbar-title {{ title }}
     v-spacer
-    v-tooltip(bottom)
-      v-btn(
-        slot="activator"
-        right
-        icon
-        @click="logout()"
-      )
-        v-icon power_settings_new
-      span EXIT
+    v-icon.mr-3(medium color="black") account_circle
+    v-btn(
+      right
+      flat
+      @click="logout()"
+    ) Sign out
 </template>
 
 <script>

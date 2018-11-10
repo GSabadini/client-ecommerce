@@ -2,7 +2,7 @@
   .data-table
     card-default
       v-card-title
-        .titulo
+        .title
           v-flex(xs5)
             lazy-text-field(:search-term.sync="searchTerm")
           v-btn(
@@ -10,7 +10,7 @@
             color="primary"
             dark
             small
-            @click="novoRegistro()"
+            @click="newRegister()"
             v-if="!disableAdd"
           )
             v-icon add
@@ -46,24 +46,24 @@
             td.cursor-pointer.text-xs-left(
               @click="goToEdit(props.item.id)"
               v-for="header in headers"
-              v-if="header.type !== 'boolean' && header.type === 'date' && header.value !== 'acao'"
+              v-if="header.type !== 'boolean' && header.type === 'date' && header.value !== 'Actions'"
             ) {{ props.item[header.value] }}
             td.cursor-pointer.text-xs-left(
               @click="goToEdit(props.item.id)"
               v-for="header in headers"
-              v-if="header.value === 'avatar' && header.type !== 'boolean' && header.type !== 'date' && header.value !== 'acao'"
+              v-if="header.value === 'image' && header.type !== 'boolean' && header.type !== 'date' && header.value !== 'Actions'"
               )
               v-avatar.my-2(:size="70")
-                img(:src="props.item.avatar")
+                img(:src="props.item.image")
             td.cursor-pointer.text-xs-left(
               @click="goToEdit(props.item.id)"
               v-for="header in headers"
-              v-if="header.value !== 'avatar' && header.type !== 'boolean' && header.type !== 'date' && header.value !== 'acao'"
+              v-if="header.value !== 'image' && header.type !== 'boolean' && header.type !== 'date' && header.value !== 'Actions'"
             ) {{ getValue(props.item, header.value) }}
             td.cursor-pointer.text-xs-left(
               @click="goToEdit(props.item.id)"
               v-for="header in headers"
-              v-if="header.type === 'boolean' && header.type !== 'date' && header.value !== 'acao'"
+              v-if="header.type === 'boolean' && header.type !== 'date' && header.value !== 'Actions'"
             )
               v-icon(
                 color="green"
@@ -88,7 +88,7 @@
                   slot="activator"
                 )
                   v-icon.grey--text.text--darken-2 edit
-                span Editar
+                span Edit
               v-tooltip(
                 top
                 v-if="!disableDelete"
@@ -103,7 +103,7 @@
                   @click="deleteRow(props.item.id)"
                 )
                   v-icon.grey--text.text--darken-2 delete
-                span Deletar
+                span Delete
     .text-xs-center.pt-1
       v-pagination(
         v-model="pagination.page"
@@ -142,7 +142,7 @@ export default {
     transformResponseData: Function,
     noResultsText: {
       type: String,
-      default: 'Nenhum resultado encontrado'
+      default: 'No results found'
     }
   },
   data: () => ({
@@ -166,7 +166,7 @@ export default {
     }
   },
   created () {
-    this.mountedHeaderAcao()
+    this.mountedHeaderAction()
     this.getData()
     miniToastr.init()
   },
@@ -177,13 +177,13 @@ export default {
     document.removeEventListener('scroll', this.hideTableAction, false)
   },
   methods: {
-    mountedHeaderAcao () {
+    mountedHeaderAction () {
       if (!this.disableEdit || !this.disableDelete) {
-        const hasAcao = this.headers.find(header => header.value === 'acao')
+        const hasAction = this.headers.find(header => header.value === 'action')
 
-        if (!hasAcao) {
+        if (!hasAction) {
           this.headers.push(
-            { text: 'Ações', value: 'acao', align: 'left', sortable: false }
+            { text: 'Actions', value: 'acao', align: 'left', sortable: false }
           )
         }
       }
@@ -194,23 +194,24 @@ export default {
       Http
         .get(this.route)
         .then(({ data }) => {
-          this.items = Object.assign([], data)
+          this.items = data.data
+          console.log(data.data)
         })
     },
-    novoRegistro () {
+    newRegister () {
       this
         .$router
         .push(`${this.route}/new`)
     },
     deleteRow (id) {
       const options = {
-        title: 'Atenção !!!',
-        text: 'Tem certeza que deseja excluir este registro ?',
+        title: 'Warning !!!',
+        text: 'Are you sure you want to delete this record ?',
         type: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3e4094',
-        confirmButtonText: 'Sim',
-        cancelButtonText: 'Cancelar'
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'Cancel'
       }
 
       this
@@ -230,9 +231,9 @@ export default {
         .delete(url)
         .then(({ status }) => {
           if (status === 204) {
-            throw Error('Houve um erro ao excluír o registro.')
+            throw Error('There was an error deleting the registry')
           }
-          miniToastr.success('Registro excluído com sucesso.', 'Sucesso!')
+          miniToastr.success('There was an error deleting the registry', 'Sucesso!')
           this.getData()
         })
     },
@@ -272,7 +273,7 @@ $primaryColor = #2f3072
   @media screen and (max-width 600px)
     padding-top 10px
 
-.titulo
+.title
   display flex
   justify-content space-between
   width 100%

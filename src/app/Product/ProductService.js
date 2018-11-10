@@ -3,9 +3,9 @@ import Http from '@/app/Arch/Http'
 const uri = 'products'
 
 class ProductService {
-  getProducts () {
+  getProducts (currentPage = 1) {
     return Http
-      .get(uri)
+      .get(`${uri}?page=${currentPage}`)
   }
 
   getProductId (id) {
@@ -21,6 +21,11 @@ class ProductService {
   editProduct (id, payload) {
     return Http
       .put(`${uri}/${id}`, payload)
+  }
+
+  deleteProduct (id) {
+    return Http
+      .delete(`${uri}/${id}`)
   }
 }
 
