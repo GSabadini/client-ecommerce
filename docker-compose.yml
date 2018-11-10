@@ -9,13 +9,3 @@ services:
     ports:
       - 8080:8080
     command: npm run serve
-
-  # # NGINX
-  # app:
-  #   image: nginx:stable-alpine
-  #   volumes:
-  #     - .:/usr/share/nginx/html
-  #   ports:
-  #     - 81:80
-  #   links:
-  #     - node

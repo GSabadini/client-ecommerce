@@ -164,11 +164,14 @@ export default {
     newProduct () {
       ProductService
         .newProduct(this.product)
-        .then(() => {
+        .then(({ body }) => {
           this.successfullRequest('Product created successfully')
         })
         .catch(() => {
-          miniToastr.error('Error', 'Error!!')
+          if(!this.product.image) {
+            return miniToastr.error('Required image', 'Error!!')
+          }
+          miniToastr.error('error', 'Error!!')
         })
     },
     editProduct () {
@@ -177,7 +180,8 @@ export default {
         .then(() => {
           this.successfullRequest('Product successfully edited')
         })
-        .catch(({ body }) => {
+        .catch((response) => {
+          console.log(response, 'edit')
           miniToastr.error('error', 'Error!!')
         })
     },

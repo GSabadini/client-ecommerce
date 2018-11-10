@@ -112,7 +112,7 @@ export default {
         return 0
       }
       return Math.ceil(totalItems / rowsPerPage)
-    },
+    }
   },
   created () {
     this.getProducts()

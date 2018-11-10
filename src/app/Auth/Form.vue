@@ -42,7 +42,6 @@
 </template>
 
 <script>
-import { isEmpty } from 'lodash'
 import AuthService from './Service'
 
 export default {

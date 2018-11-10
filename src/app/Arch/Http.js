@@ -18,7 +18,8 @@ class Http {
   constructor () {
     miniToastr.init()
     const axiosInstance = axios.create({
-      baseURL: 'http://localhost:8081/api/'
+      baseURL: 'http://localhost:8081/api/',
+      headers: { 'Accept': 'application/json' }
     })
 
     axiosInstance.interceptors.request.use((config) => {

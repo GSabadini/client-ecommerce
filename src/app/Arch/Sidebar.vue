@@ -50,7 +50,7 @@ export default {
   },
   data: () => ({
     drawer: false,
-    miniVariant: false,
+    miniVariant: false
   }),
   computed: {
     items () {
@@ -62,7 +62,7 @@ export default {
           icon: route.meta.sidebar.icon,
           title: route.meta.sidebar.title,
           modulo: route.meta.modulo,
-          path: route.path
+          path: route.props.route
         }))
     }
   },
