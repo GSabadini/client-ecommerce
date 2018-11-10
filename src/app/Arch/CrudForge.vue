@@ -16,6 +16,9 @@ export default {
     loading: true,
     items: []
   }),
+  created () {
+    this.route
+  },
   methods: {
     getData (response) {
       this.loading = false

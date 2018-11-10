@@ -14,7 +14,7 @@
     )
       v-icon(v-if="miniVariant") chevron_right
       v-icon(v-if="!miniVariant") chevron_left
-    v-toolbar-title {{ title }}
+    v-toolbar-title.headline {{ title }}
     v-toolbar-items.ml-3(v-if="!userIsLogged")
       v-btn(flat) For man
       v-btn(flat) For Woman
@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import AuthService from '@/app/Auth/AuthService'
+import AuthService from '@/app/Auth/Service'
 
 export default {
   name: 'Toolbar',

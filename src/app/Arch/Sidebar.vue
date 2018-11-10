@@ -4,7 +4,6 @@
       light
       persistent
       :mini-variant="miniVariant"
-      :clipped="clipped"
       v-model="drawer"
       enable-resize-watcher
       fixed
@@ -16,16 +15,6 @@
           width="40sem"
           )
       v-list
-        v-list-tile(
-          ripple
-          value="value"
-          :to="homeRouter"
-        )
-          v-list-tile-action
-            v-icon(
-            ) home
-          v-list-tile-content
-            v-list-tile-title.sidebar-link.subheading Home
         v-list-tile(
           ripple
           value="true"
@@ -60,10 +49,8 @@ export default {
     Toolbar
   },
   data: () => ({
-    clipped: false,
     drawer: false,
     miniVariant: false,
-    homeRouter: '/'
   }),
   computed: {
     items () {
@@ -81,7 +68,6 @@ export default {
   },
   methods: {
     toogleMiniVariant () {
-      console.log('oi')
       this.miniVariant = !this.miniVariant
     },
     toogleDrawer () {

@@ -1,6 +1,6 @@
 import axios from 'axios'
 import Router from '@/router'
-import AuthService from '@/app/Auth/AuthService'
+import AuthService from '@/app/Auth/Service'
 import miniToastr from 'mini-toastr'
 
 const unauthorizedCode = 401

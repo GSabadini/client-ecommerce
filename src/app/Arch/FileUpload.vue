@@ -1,74 +1,123 @@
 <template lang="pug">
   .file-upload
-    input.dontshow(
+    v-btn.primary(
+      ref="fileTextField"
+      @click.native="onFocus"
+      color="primary"
+      ) Add image
+      v-icon.ml-3 add_a_photo
+    input(
       type="file"
       ref="fileInput"
+      accept="image/x-png,image/jpeg"
       :multiple="multiple"
-      accept="image/x-png,image/gif,image/jpeg"
-      @change="onFileSelected"
-      )
-    v-layout(justify-center)
-      v-dialog(v-model="dialog" persistent max-width="350")
-        v-flex(xs12)
-          v-card
-            v-toolbar
-              v-toolbar-title Image
-            v-card-title.title Are you sure you want to insert this file?
-            v-spacer
-            v-card-text
-              v-layout(row justify-center)
-                v-btn(color="primary" @click="onUpload") Yes
-                v-btn(@click.stop="onDialog") No
-      v-btn.primary(@click="onInput" color="primary" block slot="activator") Add image
-        v-icon.ml-3 add_a_photo
+      :disabled="disabled"
+      @change="onFileChange"
+    )
 </template>
 
 <script>
-import http from './Http'
+  export default{
+    sync: {
+      model: {
+        type: String | Array,
+        required: true
+      }
+    },
+    props: {
+      required: {
+        type: Boolean,
+        default: false
+      },
+      disabled: {
+        type: Boolean,
+        default: false
+      },
+      multiple: {
+        type: Boolean,
+        default: false
+      },
+      isBase64: {
+        type: Boolean,
+        default: true
+      },
+    },
+    data: () => ({
+      files: [],
+      baseData: [],
+      filename: ''
+    }),
+    methods: {
+      onFocus () {
+        if (!this.disabled) {
+          this
+            .$refs
+            .fileInput
+            .click()
+        }
+      },
+      fileToBase64 (key) {
+        const self = this
+        self.model = []
 
-export default {
-  name: 'FileUpload',
-  props: ['img', 'multiple'],
-  data: () => ({
-    uploadedFiles: [],
-    selectedFile: [],
-    dialog: false
-  }),
-  methods: {
-    onDialog (dialog) {
-      this.dialog = !dialog
-    },
-    onInput () {
-      this.$refs.fileInput.click()
-    },
-    onFileSelected (event) {
-      this.dialog = true
-      this.selectedFile = event.target.files
-    },
-    onUpload () {
-      Array.prototype.forEach.call(this.selectedFile, (file, index) => {
-        const fd = new FormData()
-        fd.append('file', file, file.name)
+        const reader = new FileReader()
 
-        http
-          .post('/file-upload', fd)
-          .then(({ data }) => {
-            this.uploadedFiles.push({
-              imgSource: data,
-              principal: index === 0
+        reader.onload = progress => {
+          if (self.multiple) {
+            self
+              .model
+              .push(reader.result)
+          } else {
+            self.model = reader.result
+          }
+          self.$emit('update:model', self.model)
+        }
+
+        reader.readAsDataURL(this.files[key])
+      },
+      onFileChange ($event) {
+        const self = this
+
+        const files = this.files = $event.target.files || $event.dataTransfer.files
+
+        if (!files.length) {
+          return
+        }
+
+        if (this.isBase64) {
+          this
+            .files = Object
+            .keys(files)
+            .map((key) => {
+              self
+                .fileToBase64(key)
+
+              return self
+                .files[key]
+                .name
             })
-          })
-      })
+          this.filename = (this.files && this.files.length > 0)
+            ? this.files.join(', ')
+            : $event.target.value.split('\\').pop()
+          return
+        }
+        this.files = files
+        this.filename = this.getNameOrFilesName(files)
+        this.$emit('update:model', this.multiple ? files : files[0])
+      },
+      getNameOrFilesName (files) {
+        let fileOrFilesName = ''
+        for (let i = 0; i < files.length; i += 1) {
+          fileOrFilesName += files[i].name + ', '
+        }
 
-      this.$emit('update:img', this.uploadedFiles)
-
-      this.dialog = false
+        return fileOrFilesName.substring(0, fileOrFilesName.length - 2)
+      }
     }
   }
-}
 </script>
 
-<style lang="stylus">
-.dontshow
-  display none
+<style lang="stylus" scoped>
+  input[type="file"]
+    display none
 </style>

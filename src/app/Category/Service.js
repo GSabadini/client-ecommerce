@@ -1,6 +1,6 @@
 import Http from '@/app/Arch/Http'
 
-const uri = 'categories'
+const uri = 'backoffice/categories'
 
 class CategoryService {
   getCategories () {

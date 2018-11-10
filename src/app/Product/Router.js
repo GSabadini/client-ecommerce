@@ -1,12 +1,12 @@
 import CrudForge from '@/app/Arch/CrudForge'
-import ProductForm from '@/app/Product/ProductForm'
-import ProductDataTable from '@/app/Product/ProductDataTable'
+import BackofficeForm from '@/app/Product/BackofficeForm'
+import BackofficeDataTable from '@/app/Product/BackofficeDataTable'
 
 export default [
   {
     path: 'products',
     component: CrudForge,
-    props: { route: 'products', title: 'Products' },
+    props: { route: 'backoffice/products', title: 'Products' },
     meta: {
       sidebar: {
         icon: 'shopping_cart',
@@ -16,17 +16,17 @@ export default [
     children: [
       {
         path: '/',
-        component: ProductDataTable,
+        component: BackofficeForm,
         meta: { title: 'Product list' }
       },
       {
         path: 'new',
-        component: ProductForm,
+        component: BackofficeDataTable,
         meta: { title: 'Product' }
       },
       {
         path: 'edit/:id',
-        component: ProductForm,
+        component: BackofficeDataTable,
         meta: { title: 'Product' }
       }
     ]

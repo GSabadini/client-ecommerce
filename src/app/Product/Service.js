@@ -1,6 +1,6 @@
 import Http from '@/app/Arch/Http'
 
-const uri = 'products'
+const uri = 'backoffice/products'
 
 class ProductService {
   getProducts (currentPage = 1) {

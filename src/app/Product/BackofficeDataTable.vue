@@ -35,9 +35,9 @@
           td.text-xs-left {{ props.item.name }}
           td.text-xs-left {{ props.item.price | moneyFormat }}
           td.text-xs-left
-            v-avatar.my-2(:size="40")
-              v-img(:src="props.item.image")
-          td.text-xs-left {{ props.item.category_id }}
+            v-avatar.my-2(:size="70")
+              v-img(:src="returnPhoto(props.item.image)")
+          td.text-xs-left {{ props.item.category.name }}
           td.text-xs-left.cursor-pointer
             v-tooltip(top)
               v-btn.ma-0(
@@ -73,7 +73,7 @@
 <script>
 import CardDefault from '@/app/Arch/components/CardDefault'
 import LazyTextField from '@/app/Arch/components/LazyTextField'
-import ProductService from './ProductService'
+import ProductService from './Service'
 import messageNotification from '@/mixins/messageNotification'
 import moneyFormat from '@/filters/moneyFormat'
 
@@ -99,10 +99,11 @@ export default {
       { text: 'Name', value: 'name', align: 'left', width: '20%', sortable: false },
       { text: 'Price', value: 'price', align: 'left', width: '20%', sortable: false },
       { text: 'Image', value: 'image', align: 'left', width: '20%', sortable: false },
-      { text: 'Category', value: 'category_id', align: 'left', width: '20%', sortable: false },
+      { text: 'Category', value: 'category.name', align: 'left', width: '20%', sortable: false },
       { text: 'Actions', value: 'actions', align: 'left', width: '20%', sortable: false }
     ],
-    uri: 'products'
+    uri: 'products',
+    uriImage: 'http://localhost:8081/products'
   }),
   computed: {
     pages () {
@@ -111,7 +112,7 @@ export default {
         return 0
       }
       return Math.ceil(totalItems / rowsPerPage)
-    }
+    },
   },
   created () {
     this.getProducts()
@@ -162,6 +163,12 @@ export default {
       this
         .$router
         .push(`${this.uri}/new`)
+    },
+    returnPhoto (image) {
+      if (image) {
+        return `${this.uriImage}/${image}`
+      }
+      return ''
     }
   },
   watch: {

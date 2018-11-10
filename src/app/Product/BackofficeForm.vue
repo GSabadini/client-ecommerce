@@ -12,23 +12,26 @@
       v-container(grid-list-lg)
         v-layout(row)
           v-spacer
-          v-btn.primary(
-          ) Preview
+          v-btn.primary Preview
         v-form(
           v-model="formValid"
           ref="form"
           lazy-validation
           )
-          v-layout(column align-center justify-center)
-            v-flex(xs12)
-              v-avatar(:size="200")
+          v-layout.mt-2(column align-center justify-center)
+            v-flex(xs12 v-if="product.image")
+              v-avatar(:size="300")
                 v-img(
                   name="image"
                   id="image"
                   :src="product.image"
                 )
-            v-flex(xs12)
-              file-upload
+            v-flex.mt-2(xs12)
+              file-upload(
+                name="image"
+                id="image"
+                :model.sync="product.image"
+                )
           v-layout.mt-2(row)
             v-flex(xs12)
               v-text-field(
@@ -49,8 +52,8 @@
                 v-model="product.description"
                 required
               )
-          v-layout(row)
-            v-flex(xs6)
+          v-layout(row wrap)
+            v-flex(xs12 sm6)
               v-select(
                 name="category_id"
                 label="Categories"
@@ -62,8 +65,10 @@
                 v-model="product.category_id"
                 required
               )
-            v-flex(xs6)
+            v-flex(xs12 sm6)
               v-text-field(
+                prefix="$"
+                type="number"
                 name="price"
                 label="Price"
                 id="price"
@@ -85,8 +90,8 @@
 <script>
 import CardDefault from '@/app/Arch/components/CardDefault'
 import FileUpload from '@/app/Arch/FileUpload'
-import ProductService from './ProductService'
-import CategoryService from '@/app/Category/CategoryService'
+import ProductService from './Service'
+import CategoryService from '@/app/Category/Service'
 import miniToastr from 'mini-toastr'
 
 export default {
@@ -103,7 +108,8 @@ export default {
       (v) => !!v || 'Filling in this field is required.'
     ],
     formValid: false,
-    categories: []
+    categories: [],
+    uriImage: 'http://localhost:8081/products'
   }),
   computed: {
     verifyIdExist () {
@@ -128,11 +134,6 @@ export default {
     miniToastr.init()
   },
   methods: {
-    goToBack () {
-      this
-        .$router
-        .back()
-    },
     getCategories () {
       CategoryService
         .getCategories()
@@ -145,6 +146,7 @@ export default {
         .getProductId(this.id)
         .then(({ data }) => {
           this.product = data
+          this.product.image = `${this.uriImage}/${data.image}`
           this.title = `Editar ${data.name}`
         })
     },
@@ -165,8 +167,8 @@ export default {
         .then(() => {
           this.successfullRequest('Product created successfully')
         })
-        .catch(({ body }) => {
-          miniToastr.error(body, 'Error!!')
+        .catch(() => {
+          miniToastr.error('Error', 'Error!!')
         })
     },
     editProduct () {
@@ -176,12 +178,17 @@ export default {
           this.successfullRequest('Product successfully edited')
         })
         .catch(({ body }) => {
-          miniToastr.error(body, 'Error!!')
+          miniToastr.error('error', 'Error!!')
         })
     },
     successfullRequest (message) {
       miniToastr.success(message, 'Success!')
       this.goToBack()
+    },
+    goToBack () {
+      this
+        .$router
+        .back()
     }
   }
 }

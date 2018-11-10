@@ -43,7 +43,7 @@
 
 <script>
 import { isEmpty } from 'lodash'
-import AuthService from './AuthService'
+import AuthService from './Service'
 
 export default {
   name: 'auth-form',
