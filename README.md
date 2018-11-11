@@ -22,6 +22,10 @@ docker-compose run node sh
 npm install
 ```
 
+```
+docker-compose up -d
+```
+
 Step by step node
 
 ```
