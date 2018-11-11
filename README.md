@@ -1,36 +1,40 @@
-# client-marvel
+## Getting Started
 
-## Project setup
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
+
+### Prerequisites
+
+What things you need to install the software and how to install them
+
+```
+Docker and docker-compose or node
+```
+
+### Installing
+
+Step by step docker
+
+```
+docker-compose run node sh
+```
+
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+Step by step node
+
+```
+npm install
+```
 ```
 npm run serve
 ```
 
-### Compiles and minifies for production
+## Credencials
+
 ```
-npm run build
+email: devsquad@development.com
+password: devsquad
 ```
 
-### Run your tests
-```
-npm run test
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Run your end-to-end tests
-```
-npm run test:e2e
-```
-
-### Run your unit tests
-```
-npm run test:unit
-```
