@@ -188,7 +188,6 @@ export default {
       this.getProducts(newValue)
     },
     searchTerm (newValue) {
-      console.log(newValue)
       this.getProducts(this.currentPage, newValue)
     },
     readCsv (newValue) {
