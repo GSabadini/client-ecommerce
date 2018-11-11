@@ -18,7 +18,7 @@ const router = new Router({
       children: routes
     },
     {
-      path: '/auth',
+      path: '/',
       name: 'auth',
       component: AuthForm
     }

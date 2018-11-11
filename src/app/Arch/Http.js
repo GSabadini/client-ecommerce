@@ -10,7 +10,7 @@ const responseSucess = response => response
 const responseError = ({ response }) => {
   if (response.status === unauthorizedCode) {
     miniToastr.error('Invalid credentials', 'Error!')
-    Router.replace('/auth')
+    Router.replace('/')
   }
 }
 

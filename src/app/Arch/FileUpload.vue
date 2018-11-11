@@ -4,12 +4,12 @@
       ref="fileTextField"
       @click.native="onFocus"
       color="primary"
-      ) Add image
-      v-icon.ml-3 add_a_photo
+      ) {{ buttonTitle }}
+      v-icon.ml-3 {{ buttonIcon }}
     input(
       type="file"
       ref="fileInput"
-      accept="image/x-png,image/jpeg"
+      :accept="typeAccept"
       :multiple="multiple"
       :disabled="disabled"
       @change="onFileChange"
@@ -40,6 +40,18 @@ export default{
     isBase64: {
       type: Boolean,
       default: true
+    },
+    buttonTitle: {
+      type: String,
+      required: true
+    },
+    buttonIcon: {
+      type: String,
+      required: true
+    },
+    typeAccept: {
+      type: String,
+      default: 'image/x-png,image/jpeg'
     }
   },
   data: () => ({

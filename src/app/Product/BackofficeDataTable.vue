@@ -4,8 +4,8 @@
       v-toolbar-title Products
         v-icon(color="primary").ml-2 assessment
       v-spacer
-      v-tooltip(bottom)
-        v-btn.mt-2(
+      v-tooltip(top)
+        v-btn.mt-2.mr-5(
           id="botao"
           color="primary"
           right
@@ -19,12 +19,22 @@
     v-card-text
       v-card-title
         .title
-          v-flex(xs6)
+          v-flex(xs12 sm6)
+            file-upload(
+              name="image"
+              id="image"
+              :model.sync="readCsv"
+              :buttonTitle="'Import products'"
+              :buttonIcon="'insert_drive_file'"
+              typeAccept="'.csv'"
+              :isBase64="false"
+              )
+          v-flex(xs12 sm6)
             lazy-text-field(:search-term.sync="searchTerm")
-      v-data-table.elevation-5.mt-1.table-nowrap(
+      v-data-table.elevation-2.mt-1.table-nowrap(
         id="listTable"
-        no-data-text="Nenhum registro encontrado"
-        no-results-text="Nenhum resultado encontrado"
+        no-data-text="No records found"
+        no-results-text="No results found"
         :headers="headers"
         :items="items"
         hide-actions
@@ -72,25 +82,27 @@
 
 <script>
 import CardDefault from '@/app/Arch/components/CardDefault'
+import FileUpload from '@/app/Arch/FileUpload'
 import LazyTextField from '@/app/Arch/components/LazyTextField'
 import ProductService from './Service'
 import messageNotification from '@/mixins/messageNotification'
-import moneyFormat from '@/filters/moneyFormat'
 
 export default {
   name: 'product-data-table',
   components: {
     CardDefault,
-    LazyTextField
+    LazyTextField,
+    FileUpload
   },
   mixins: [
     messageNotification
   ],
   data: () => ({
+    readCsv: '',
     currentPage: 1,
     searchTerm: '',
     pagination: {
-      rowsPerPage: 15,
+      rowsPerPage: 10,
       totalItems: null
     },
     metadata: {},
@@ -118,9 +130,9 @@ export default {
     this.getProducts()
   },
   methods: {
-    getProducts (page) {
+    getProducts (page, search) {
       ProductService
-        .getProducts(page)
+        .getProducts(page, search)
         .then(({ data }) => {
           this.items = data.data
           this.currentPage = data.current_page
@@ -174,6 +186,17 @@ export default {
   watch: {
     currentPage (newValue) {
       this.getProducts(newValue)
+    },
+    searchTerm (newValue) {
+      console.log(newValue)
+      this.getProducts(this.currentPage, newValue)
+    },
+    readCsv (newValue) {
+      ProductService
+        .uploadCsv(newValue)
+        .then((response) => {
+          console.log(response)
+        })
     }
   }
 }
@@ -184,6 +207,7 @@ export default {
   display flex
   justify-content space-between
   width 100%
+  flex-wrap wrap
 .table-nowrap
   white-space nowrap
 </style>

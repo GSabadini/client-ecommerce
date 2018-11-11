@@ -63,7 +63,7 @@ export default {
     goToAuth () {
       this
         .$router
-        .push('/auth')
+        .push('/')
     },
     eventToogleMiniVariant () {
       this.$emit('mini-variant')

@@ -3,9 +3,9 @@ import Http from '@/app/Arch/Http'
 const uri = 'backoffice/products'
 
 class ProductService {
-  getProducts (currentPage = 1) {
+  getProducts (currentPage = 1, search = '') {
     return Http
-      .get(`${uri}?page=${currentPage}`)
+      .get(`${uri}?page=${currentPage}&search=${search}`)
   }
 
   getProductId (id) {
@@ -26,6 +26,11 @@ class ProductService {
   deleteProduct (id) {
     return Http
       .delete(`${uri}/${id}`)
+  }
+
+  uploadCsv (payload) {
+    return Http
+      .post(`${uri}/upload-csv`, payload)
   }
 }
 

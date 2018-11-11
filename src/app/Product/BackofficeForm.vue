@@ -31,6 +31,8 @@
                 name="image"
                 id="image"
                 :model.sync="product.image"
+                :buttonTitle="'Add image'"
+                :buttonIcon="'add_a_photo'"
                 )
           v-layout.mt-2(row)
             v-flex(xs12)
@@ -41,7 +43,7 @@
                 :rules="inputRules"
                 v-model="product.name"
                 required
-              )
+                )
           v-layout(row)
             v-flex(xs12)
               v-textarea(
@@ -51,7 +53,7 @@
                 :rules="inputRules"
                 v-model="product.description"
                 required
-              )
+                )
           v-layout(row wrap)
             v-flex(xs12 sm6)
               v-select(
@@ -64,7 +66,7 @@
                 :rules="inputRules"
                 v-model="product.category_id"
                 required
-              )
+                )
             v-flex(xs12 sm6)
               v-text-field(
                 prefix="$"
@@ -75,16 +77,16 @@
                 :rules="inputRules"
                 v-model="product.price"
                 required
-              )
+                )
         v-layout.mt-5(row)
           v-spacer
           v-btn(
             @click="goToBack()"
-          ) Cancel
+            ) Cancel
           v-btn(
             color="primary"
             @click="save()"
-          ) Save
+            ) Save
 </template>
 
 <script>
@@ -168,7 +170,7 @@ export default {
           this.successfullRequest('Product created successfully')
         })
         .catch(() => {
-          if(!this.product.image) {
+          if (!this.product.image) {
             return miniToastr.error('Required image', 'Error!!')
           }
           miniToastr.error('error', 'Error!!')
@@ -177,12 +179,11 @@ export default {
     editProduct () {
       ProductService
         .editProduct(this.id, this.product)
-        .then(() => {
+        .then(({ body }) => {
           this.successfullRequest('Product successfully edited')
         })
         .catch((response) => {
-          console.log(response, 'edit')
-          miniToastr.error('error', 'Error!!')
+          miniToastr.error('Required fields', 'Error!!')
         })
     },
     successfullRequest (message) {
