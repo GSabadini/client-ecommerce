@@ -189,13 +189,6 @@ export default {
     },
     searchTerm (newValue) {
       this.getProducts(this.currentPage, newValue)
-    },
-    readCsv (newValue) {
-      ProductService
-        .uploadCsv(newValue)
-        .then((response) => {
-          console.log(response)
-        })
     }
   }
 }
