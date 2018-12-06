@@ -42,3 +42,4 @@ email: devsquad@development.com
 password: devsquad
 ```
 
+[![Coverage Status](https://coveralls.io/repos/github/GSabadini/client-ecommerce/badge.svg?branch=master)](https://coveralls.io/github/GSabadini/client-ecommerce?branch=master)
