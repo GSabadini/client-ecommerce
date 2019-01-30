@@ -2,6 +2,10 @@
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
+## API repository
+
+https://github.com/GSabadini/api-laravel-auth/blob/master/readme.md
+
 ### Prerequisites
 
 What things you need to install the software and how to install them
