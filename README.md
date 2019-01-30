@@ -4,7 +4,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 ## API repository
 
-https://github.com/GSabadini/api-laravel-auth/blob/master/readme.md
+https://github.com/GSabadini/api-laravel-auth
 
 ### Prerequisites
 
