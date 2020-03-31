@@ -1,4 +1,4 @@
-<h1 align="center">Welcome to Vue Auth</h1>
+<h1 align="center">Welcome to Vue Auth 👋</h1>
 
 ## API repository
 
