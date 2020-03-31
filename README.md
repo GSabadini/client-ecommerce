@@ -2,7 +2,7 @@
 
 ## API repository
 
-[Laravel Auth](https://github.com/GSabadini/laravel-auth)
+- [Laravel Auth](https://github.com/GSabadini/laravel-auth)
 
 ## Getting Started
 
